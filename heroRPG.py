@@ -7,7 +7,7 @@ class Character:
         self.power = power
     
     def attack(self, character, other_char, random):
-        
+
         if(random == True):
             self.power = self.power*2
             character.health -= self.power
@@ -19,7 +19,7 @@ class Character:
             character.health -= self.power
             print(f"The {other_char} does {self.power} damage to the {character.name}.")
         
-        if character.health <= 0:
+        if(character.name != 'zombie') and character.health <= 0:
             print(f"The {character.name} is dead.")
     
     def alive(self):
@@ -27,7 +27,7 @@ class Character:
             alive = True
         elif self.health <= 0:
             alive = False
-            
+        
         return alive
     
     def print_status(self, character):
@@ -35,7 +35,7 @@ class Character:
 
 class Hero(Character):
     def __init__(self):
-        self.health = 100
+        self.health = 10
         self.power = 5
         self.name = "hero"
     
@@ -56,10 +56,16 @@ class Goblin(Character):
 
 class Zombie(Character):
     def __init__(self):
-        self.health = 9999999999999
+        self.health = 0
         self.power = 1
         self.name = "zombie"
 
+    def alive(self):
+        return True
+    
+    def print_status(self, character):
+        print(f"The zombie has 0 health and 1 power.")
+    
 class Medic(Character):
     def __init__(self):
         self.health = 20
@@ -68,12 +74,18 @@ class Medic(Character):
         
     def restore(self):
         self.health = self.health+2
+
+class Shadow(Character):
+    def __init__(self):
+        self.health = 1
+        self.power = 5
+        self.name = "shadow"
         
 def main():
 
     hero = Hero()
     #goblin = Goblin()
-    enemy = Medic()
+    enemy = Zombie()
 
     while enemy.alive() and hero.alive():
         
@@ -89,22 +101,23 @@ def main():
         raw_input = input()
         
         if raw_input == "1":
-            hero.attack(enemy, "hero")
-            
             if(enemy.name == "medic" and random.randint(1,10) <= 2):
                 enemy.restore()
                 print("Medic restored 2 health points.")
+                
+            hero.attack(enemy, "hero")  
             
         elif raw_input == "2":
             pass
         elif raw_input == "3":
-            print("Goodbye.")
+            print("\nGoodbye.\n")
             break
         else:
             print(f"Invalid input {raw_input}")
 
         if enemy.health > 0:
-            enemy.attack(hero, f"{enemy.name}", False)
-
+            enemy.attack(hero, enemy.name, False)
+        elif enemy.name == 'zombie':
+            enemy.attack(hero, enemy.name, False)
 
 main()
