@@ -9,15 +9,24 @@ class Character:
     def attack(self, character, other_char, random):
 
         if(random == True):
-            self.power = self.power*2
-            character.health -= self.power
-            print(f"The {other_char} does {self.power} damage to the {character.name}.")
-            self.power = int((self.power)/2)
+            dmgAfterArmor = int((self.power - character.armor_rating)*2)
+            
+            if character.armor_rating >= self.power:
+                dmgAfterArmor = 0
+            
+            character.health = character.health - dmgAfterArmor
+            print(f"The {other_char} does {dmgAfterArmor} damage to the {character.name}.")
+
             random = False
         
         else:
-            character.health -= self.power
-            print(f"The {other_char} does {self.power} damage to the {character.name}.")
+            dmgAfterArmor = self.power - character.armor_rating
+            
+            if character.armor_rating >= self.power:
+                dmgAfterArmor = 0
+            
+            character.health = character.health - dmgAfterArmor
+            print(f"The {other_char} does {dmgAfterArmor} damage to the {character.name}.")
     
     def alive(self):
         if self.health > 0:
@@ -28,14 +37,16 @@ class Character:
         return alive
     
     def print_status(self, character):
-        print(f"The {character} has {self.health} health and {self.power} power.")
+        print(f"The {character} has {self.health} health, {self.power} power, and {self.armor_rating} armor rating.")
 
 class Hero(Character):
     def __init__(self):
-        self.health = 100
-        self.power = 5
         self.name = "hero"
+        self.health = 50
+        self.power = 5
         self.coins = 10
+        self.armor_rating = 0
+        self.evasion = 0
     
     def attack(self, character, other_char):
         if(random.randint(1,10) <= 2):
@@ -59,6 +70,8 @@ class Goblin(Character):
         self.power = 2
         self.name = "goblin"
         self.bounty = 5
+        self.armor_rating = 0
+        self.evasion = 0
         
 class Zombie(Character):
     def __init__(self):
@@ -74,34 +87,45 @@ class Zombie(Character):
     
 class Medic(Character):
     def __init__(self):
-        self.health = 20
+        self.health = 30
         self.power = 3
         self.name = "medic"
-        self.bounty = 6
+        self.bounty = 10
+        self.armor_rating = 0
+        self.evasion = 0
         
     def restore(self):
         self.health = self.health+2
 
 class Shadow(Character):
     def __init__(self):
-        self.health = 1
-        self.power = 2
+        self.health = 5
+        self.power = 3
         self.name = "shadow"
         self.bounty = 10
+        self.armor_rating = 0
+        self.evasion = 0
+        
         
 class Behemoth(Character):
     def __init__(self):
-        self.health = 200
+        self.health = 150
         self.power = 6
         self.name = "behemoth"
         self.bounty = 100
+        self.armor_rating = 4
+        self.evasion = 0
+        
 
 class Bard(Character):
     def __init__(self):
         self.health = 55
         self.power = 4
         self.name = "bard"
-        self.bounty = 25
+        self.bounty = 35
+        self.armor_rating = 0
+        self.evasion = 0
+        
         
 class Battle():
     
@@ -133,10 +157,10 @@ class Battle():
                 if(enemy.name == 'bard'):
                     bardchance = random.randint(1,10)
                     
-                    if(bardchance >= 6):
+                    if(bardchance >= 7):
                         print("\nThe bard charmed you into attacking yourself!\n")
                         hero.attack(hero, "hero")
-                    elif bardchance < 6:
+                    elif bardchance < 7:
                         hero.attack(enemy, "hero")
                 
                 elif(enemy.name == "medic"):
@@ -188,17 +212,38 @@ class Tonic():
     name = "tonic"
     def apply(self, hero):
         hero.health += 10
-        print(f"Hero's health increased to {hero.health}")
+        print(f"\nHero's health increased to {hero.health}\n")
 
 class Sword():
     cost = 10
     name = "sword"
     def apply(self, hero):
         hero.power += 2
-        print(f"Hero's power increased to {hero.power}")
+        print(f"\nHero's power increased to {hero.power}.\n")
+        
+class SuperTonic():
+    cost = 20
+    name = "super tonic"
+    def apply(self, hero):
+        hero.health += 50
+        print(f"\nHero's health inscread to {hero.health}.\n")
+
+class Armor():
+    cost = 15
+    name = "armor"  
+    def apply(self, hero):
+        hero.armor_rating += 2 
+        print(f"\nHero now has armor rating of {hero.armor_rating}.\n")
+
+class Evade():
+    cost = 25
+    name = "evade"
+    def apply(self, hero):
+        hero.evasion += 2
+        print(f"\nHero now has evasion rating of {hero.evasion}.\n")
         
 class Shop():
-    items = [Tonic, Sword]
+    items = [Tonic, Sword, SuperTonic, Armor, Evade]
     def do_shopping(self, hero):
         while True:
             print("====================")
@@ -208,11 +253,12 @@ class Shop():
             print("What do you want to do?")
             for i in range(len(Shop.items)):
                 item = Shop.items[i]
-                print(f"{i+1} buy {item.name} ({item.cost})")
+                print(f"{i+1}. buy {item.name} ({item.cost})")
             print("10. leave shop")
             
             answer = input("> ")
             intAnswer = int(answer)
+            
             if answer == '':
                 print("Invalid input.")
             elif intAnswer == 10:
@@ -234,7 +280,14 @@ def main():
             print("Your hero died.")
             break
         
+        if(enemy.name == "behemoth" and enemy.alive() == False):
+            print("*******************************")
+            print("Congratulations! You've won!")
+            print("*******************************")
+            break
+        
         shopping_engine.do_shopping(hero)
+        
 
 
 main()
