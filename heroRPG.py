@@ -7,10 +7,16 @@
 # 3. flee
 
 class Character:
-    
     def __init__(self, health, power):
         self.health = health
         self.power = power
+    
+    def attack(self, character, other_char):
+        character.health -= self.power
+        print(f"The {other_char} does {self.power} damage to the {character.name}.")
+        
+        if character.health <= 0:
+            print(f"The {character.name} is dead.")
     
     def alive(self):
         if self.health > 0:
@@ -19,40 +25,21 @@ class Character:
             alive = False
             
         return alive
+    
+    def print_status(self, character):
+        print(f"The {character} has {self.health} health and {self.power} power.")
 
 class Hero(Character):
-    
     def __init__(self):
         self.health = 10
         self.power = 5
-    
-    def attack(self, goblin):
-        goblin.health -= self.power
-        print(f"You do {self.power} damage to the goblin.")
-        
-        if goblin.health <= 0:
-            print("The goblin is dead.")
-    
-    def print_status(self):
-        print(f"You have {self.health} health and {self.power} power.")
-        
+        self.name = "hero"
 
 class Goblin(Character):
-    
     def __init__(self):
         self.health = 6
         self.power = 2
-        
-    def attack(self, hero):
-        hero.health -= self.power
-        print(f"The goblin does {self.power} damage to you.")
-            
-        if hero.health <= 0:
-            print("You are dead.")
-            
-    def print_status(self):
-        print(f"The goblin has {self.health} health and {self.power} power.")
-        
+        self.name = "goblin"
 
 def main():
 
@@ -61,8 +48,8 @@ def main():
 
     while goblin.alive() and hero.alive():
         
-        hero.print_status()
-        goblin.print_status()
+        hero.print_status("hero")
+        goblin.print_status("goblin")
         
         print("\nWhat do you want to do?")
         print("1. fight goblin")
@@ -73,7 +60,7 @@ def main():
         raw_input = input()
         
         if raw_input == "1":
-            hero.attack(goblin)
+            hero.attack(goblin, "hero")
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -83,7 +70,7 @@ def main():
             print(f"Invalid input {raw_input}")
 
         if goblin.health > 0:
-            goblin.attack(hero)
+            goblin.attack(hero, "goblin")
 
 
 main()
