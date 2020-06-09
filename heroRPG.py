@@ -35,7 +35,7 @@ class Character:
 
 class Hero(Character):
     def __init__(self):
-        self.health = 10
+        self.health = 100
         self.power = 5
         self.name = "hero"
     
@@ -78,14 +78,14 @@ class Medic(Character):
 class Shadow(Character):
     def __init__(self):
         self.health = 1
-        self.power = 5
+        self.power = 2
         self.name = "shadow"
         
 def main():
 
     hero = Hero()
     #goblin = Goblin()
-    enemy = Zombie()
+    enemy = Shadow()
 
     while enemy.alive() and hero.alive():
         
@@ -104,9 +104,15 @@ def main():
             if(enemy.name == "medic" and random.randint(1,10) <= 2):
                 enemy.restore()
                 print("Medic restored 2 health points.")
-                
-            hero.attack(enemy, "hero")  
             
+            shadowchance = random.randint(1,10)
+            if(enemy.name != 'shadow'):
+                hero.attack(enemy, "hero")
+            elif(shadowchance != 4):
+                print("\nShadow dodged the attack.\n")
+            else:
+                hero.attack(enemy, "hero")
+                
         elif raw_input == "2":
             pass
         elif raw_input == "3":
