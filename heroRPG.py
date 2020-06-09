@@ -6,14 +6,14 @@ class Character:
         self.health = health
         self.power = power
     
-    def attack(self, character, other_char, isDblDmg):
+    def attack(self, character, other_char, random):
         
-        if(isDblDmg == True):
+        if(random == True):
             self.power = self.power*2
             character.health -= self.power
             print(f"The {other_char} does {self.power} damage to the {character.name}.")
             self.power = int((self.power)/2)
-            dblDmg = False
+            random = False
         
         else:
             character.health -= self.power
@@ -35,7 +35,7 @@ class Character:
 
 class Hero(Character):
     def __init__(self):
-        self.health = 10
+        self.health = 100
         self.power = 5
         self.name = "hero"
     
@@ -59,20 +59,29 @@ class Zombie(Character):
         self.health = 9999999999999
         self.power = 1
         self.name = "zombie"
+
+class Medic(Character):
+    def __init__(self):
+        self.health = 20
+        self.power = 3
+        self.name = "medic"
+        
+    def restore(self):
+        self.health = self.health+2
         
 def main():
 
     hero = Hero()
     #goblin = Goblin()
-    zombie = Zombie()
+    enemy = Medic()
 
-    while zombie.alive() and hero.alive():
+    while enemy.alive() and hero.alive():
         
         hero.print_status("hero")
-        zombie.print_status("zombie")
+        enemy.print_status(f"{enemy.name}")
         
         print("\nWhat do you want to do?")
-        print("1. fight zombie")
+        print(f"1. fight {enemy.name}")
         print("2. do nothing")
         print("3. flee")
         print("> ", end=' ')
@@ -80,7 +89,12 @@ def main():
         raw_input = input()
         
         if raw_input == "1":
-            hero.attack(zombie, "hero")
+            hero.attack(enemy, "hero")
+            
+            if(enemy.name == "medic" and random.randint(1,10) <= 2):
+                enemy.restore()
+                print("Medic restored 2 health points.")
+            
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -89,8 +103,8 @@ def main():
         else:
             print(f"Invalid input {raw_input}")
 
-        if zombie.health > 0:
-            zombie.attack(hero, "zombie", False)
+        if enemy.health > 0:
+            enemy.attack(hero, f"{enemy.name}", False)
 
 
 main()
