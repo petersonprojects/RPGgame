@@ -7,11 +7,21 @@
 # 3. flee
 
 class Character:
+    
     def __init__(self, health, power):
         self.health = health
         self.power = power
+    
+    def alive(self):
+        if self.health > 0:
+            alive = True
+        elif self.health <= 0:
+            alive = False
+            
+        return alive
 
 class Hero(Character):
+    
     def __init__(self):
         self.health = 10
         self.power = 5
@@ -23,15 +33,12 @@ class Hero(Character):
         if goblin.health <= 0:
             print("The goblin is dead.")
     
-    def alive(self):
-        if self.health > 0:
-            alive = True
-        elif self.health <= 0:
-            alive = False
-            
-        return alive
+    def print_status(self):
+        print(f"You have {self.health} health and {self.power} power.")
+        
 
 class Goblin(Character):
+    
     def __init__(self):
         self.health = 6
         self.power = 2
@@ -43,13 +50,9 @@ class Goblin(Character):
         if hero.health <= 0:
             print("You are dead.")
             
-    def alive(self):
-        if self.health > 0:
-            alive = True
-        elif self.health <= 0:
-            alive = False
-            
-        return alive
+    def print_status(self):
+        print(f"The goblin has {self.health} health and {self.power} power.")
+        
 
 def main():
 
@@ -58,8 +61,8 @@ def main():
 
     while goblin.alive() and hero.alive():
         
-        print(f"You have {hero.health} health and {hero.power} power.")
-        print(f"The goblin has {goblin.health} health and {goblin.power} power.")
+        hero.print_status()
+        goblin.print_status()
         
         print("\nWhat do you want to do?")
         print("1. fight goblin")
