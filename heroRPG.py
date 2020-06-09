@@ -41,18 +41,25 @@ class Goblin(Character):
         self.power = 2
         self.name = "goblin"
 
+class Zombie(Character):
+    def __init__(self):
+        self.health = 999999999999999999
+        self.power = 1
+        self.name = "zombie"
+        
 def main():
 
     hero = Hero()
-    goblin = Goblin()
+    #goblin = Goblin()
+    zombie = Zombie()
 
-    while goblin.alive() and hero.alive():
+    while zombie.alive() and hero.alive():
         
         hero.print_status("hero")
-        goblin.print_status("goblin")
+        zombie.print_status("zombie")
         
         print("\nWhat do you want to do?")
-        print("1. fight goblin")
+        print("1. fight zombie")
         print("2. do nothing")
         print("3. flee")
         print("> ", end=' ')
@@ -60,7 +67,7 @@ def main():
         raw_input = input()
         
         if raw_input == "1":
-            hero.attack(goblin, "hero")
+            hero.attack(zombie, "hero")
         elif raw_input == "2":
             pass
         elif raw_input == "3":
@@ -69,8 +76,8 @@ def main():
         else:
             print(f"Invalid input {raw_input}")
 
-        if goblin.health > 0:
-            goblin.attack(hero, "goblin")
+        if zombie.health > 0:
+            zombie.attack(hero, "zombie")
 
 
 main()
