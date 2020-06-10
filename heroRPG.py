@@ -74,9 +74,9 @@ class Hero(Character):
     def buy(self, hero, item):
         if(self.coins >= item.cost):
             self.coins -= item.cost
+
         else:
             print("You don't have enough coins to buy this item.")
-            
         
 class Goblin(Character):
     def __init__(self):
@@ -91,9 +91,10 @@ class Goblin(Character):
 class Zombie(Character):
     def __init__(self):
         self.health = 0
-        self.power = 1
+        self.power = 4
         self.name = "zombie"
-
+        self.bounty = 5
+        
     def alive(self):
         return True
     
@@ -135,18 +136,17 @@ class Behemoth(Character):
 
 class Bard(Character):
     def __init__(self):
-        self.health = 55
+        self.health = 40
         self.power = 4
         self.name = "bard"
         self.bounty = 35
-        self.armor_rating = 0
+        self.armor_rating = 1
         self.evasion = 0
         self.fullevasion = 0
         
 class Battle():
     
     def do_battle(self, hero, enemy):
-        
         print("========================")
         print(f"Hero faces the {enemy.name}.")
         print("========================")
@@ -174,10 +174,10 @@ class Battle():
                 if(enemy.name == 'bard'):
                     bardchance = random.randint(1,10)
                     
-                    if(bardchance >= 7):
+                    if(bardchance >= 8):
                         print("\nThe bard charmed you into attacking yourself!\n")
                         hero.attack(hero)
-                    elif bardchance < 7:
+                    elif bardchance < 8:
                         hero.attack(enemy)
                 
                 elif(enemy.name == "medic"):
@@ -208,7 +208,6 @@ class Battle():
                     print("===================")
                     for i in range(len(hero.inventory)):
                         print(f"{i+1} use {hero.inventory[i].name}")
-                    
                     print("10. Exit")
                     iteminput = int(input("> "))
                     if iteminput == 10:
@@ -221,12 +220,13 @@ class Battle():
 
             if enemy.health > 0:
                 enemy.attack(hero, False)
-                
+                            
             elif enemy.name == 'zombie':
                 enemy.attack(hero, False)
-                
+            
+            
         if hero.alive():
-            if not(enemy.alive()):
+            if not(enemy.alive() or enemy.name == 'zombie'):
                 print(f"You've defeated the {enemy.name} and gained {enemy.bounty} coins.")
                 hero.coins += enemy.bounty
             return True
@@ -255,21 +255,21 @@ class SuperTonic():
         print(f"\nHero's health inscread to {hero.health}.\n")
 
 class Armor():
-    cost = 15
+    cost = 20
     name = "armor"  
     def apply(self, hero):
         hero.armor_rating += 2 
         print(f"\nHero now has armor rating of {hero.armor_rating}.\n")
 
 class Evade():
-    cost = 25
+    cost = 15
     name = "evade"
     def apply(self, hero):
         hero.evasion += 0.1
         print(f"\nHero now has evasion rating of {hero.evasion}.\n")
 
 class EssenceOfGhost():
-    cost = 15
+    cost = 10
     name = "essence of ghost"
     def apply(self, hero):
         hero.fullevasion = 3
@@ -281,15 +281,24 @@ class GreatSword():
     def apply(self, hero):
         hero.power += 5
         print(f"\nHero now has power of {hero.power}.\n")
+
+class Swap():
+    cost = 5
+    name = "swap"
+    def apply(self, hero, enemy):
+        temp = hero.power
+        hero.power = enemy.power
+        enemy.power = temp
+        print(f"Attacks swapped!\nHero has attack of {hero.power}\nEnemy has attack of {enemy.power}")
         
 class Shop():
-    items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword]
+    items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword, Swap]
     def do_shopping(self, hero):
         while True:
             print("====================")
             print("Welcome to The Shop!")
             print("====================")
-            print(f"You have {hero.coins} coins.")
+            print(f"You have {hero.coins} coins.\n")
             print("What do you want to do?")
             for i in range(len(Shop.items)):
                 item = Shop.items[i]
@@ -306,15 +315,15 @@ class Shop():
                 item = itemToBuy()
                 hero.inventory.append(item)
                 hero.buy(hero, item)
+                print(f"{hero.inventory[len(hero.inventory)-1]} added to inventory.")
             else:
                 print("Invalid input.")
 def main():
 
     hero = Hero()
-    inventory = []
     battle_engine = Battle()
     shopping_engine = Shop()
-    enemies = [Goblin(),Shadow(),Medic(),Bard(),Behemoth()]
+    enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Behemoth()]
 
     for enemy in enemies:
         hero_won = battle_engine.do_battle(hero,enemy)
