@@ -6,27 +6,40 @@ class Character:
         self.health = health
         self.power = power
     
-    def attack(self, character, other_char, random):
-
-        if(random == True):
-            dmgAfterArmor = int((self.power - character.armor_rating)*2)
+    def attack(self, character, dblDmg):
+        evasion = random.random()
+        
+        if(character.evasion >= .99):
+            character.evasion = .99
+        
+        if(dblDmg == True):
             
-            if character.armor_rating >= self.power:
-                dmgAfterArmor = 0
-            
-            character.health = character.health - dmgAfterArmor
-            print(f"The {other_char} does {dmgAfterArmor} damage to the {character.name}.")
+            if(character.evasion >= evasion or character.fullevasion > 0):
+                print(f"\n{character.name} evaded the attack from {self.name}!\n")
+                character.fullevasion -= 1
+            else:
+                dmgAfterArmor = int((self.power - character.armor_rating)*2)
+                
+                if character.armor_rating >= self.power:
+                    dmgAfterArmor = 0
+                
+                character.health = character.health - dmgAfterArmor
+                print(f"The {self.name} does {dmgAfterArmor} damage to the {character.name}.")
 
-            random = False
+            dblDmg = False
         
         else:
-            dmgAfterArmor = self.power - character.armor_rating
-            
-            if character.armor_rating >= self.power:
-                dmgAfterArmor = 0
-            
-            character.health = character.health - dmgAfterArmor
-            print(f"The {other_char} does {dmgAfterArmor} damage to the {character.name}.")
+            if(character.evasion >= evasion or character.fullevasion > 0):
+                print(f"\n{character.name} evaded the attack from {self.name}!\n")
+                character.fullevasion -= 1
+            else:
+                dmgAfterArmor = self.power - character.armor_rating
+                
+                if character.armor_rating >= self.power:
+                    dmgAfterArmor = 0
+                
+                character.health = character.health - dmgAfterArmor
+                print(f"The {self.name} does {dmgAfterArmor} damage to the {character.name}.")
     
     def alive(self):
         if self.health > 0:
@@ -47,14 +60,15 @@ class Hero(Character):
         self.coins = 10
         self.armor_rating = 0
         self.evasion = 0
+        self.fullevasion = 0
     
-    def attack(self, character, other_char):
+    def attack(self, character):
         if(random.randint(1,10) <= 2):
             isDblDmg = True
         else:
             isDblDmg = False
         
-        super(Hero,self).attack(character, other_char, isDblDmg)
+        super(Hero,self).attack(character, isDblDmg)
     
     def buy(self, hero, item):
         if(self.coins >= item.cost):
@@ -72,6 +86,7 @@ class Goblin(Character):
         self.bounty = 5
         self.armor_rating = 0
         self.evasion = 0
+        self.fullevasion = 0
         
 class Zombie(Character):
     def __init__(self):
@@ -93,6 +108,7 @@ class Medic(Character):
         self.bounty = 10
         self.armor_rating = 0
         self.evasion = 0
+        self.fullevasion = 0
         
     def restore(self):
         self.health = self.health+2
@@ -104,8 +120,8 @@ class Shadow(Character):
         self.name = "shadow"
         self.bounty = 10
         self.armor_rating = 0
-        self.evasion = 0
-        
+        self.evasion = 0.9 #90% chance to avoid attack
+        self.fullevasion = 0
         
 class Behemoth(Character):
     def __init__(self):
@@ -115,7 +131,7 @@ class Behemoth(Character):
         self.bounty = 100
         self.armor_rating = 4
         self.evasion = 0
-        
+        self.fullevasion = 0
 
 class Bard(Character):
     def __init__(self):
@@ -125,7 +141,7 @@ class Bard(Character):
         self.bounty = 35
         self.armor_rating = 0
         self.evasion = 0
-        
+        self.fullevasion = 0
         
 class Battle():
     
@@ -159,27 +175,19 @@ class Battle():
                     
                     if(bardchance >= 7):
                         print("\nThe bard charmed you into attacking yourself!\n")
-                        hero.attack(hero, "hero")
+                        hero.attack(hero)
                     elif bardchance < 7:
-                        hero.attack(enemy, "hero")
+                        hero.attack(enemy)
                 
                 elif(enemy.name == "medic"):
                     medicchance = random.randint(1,10)
                     if(medicchance <= 2):
                         enemy.restore()
                         print("Medic restored 2 health points.")
-                    hero.attack(enemy, "hero")
+                    hero.attack(enemy)
                 
-                elif(enemy.name == "shadow"):
-                    shadowchance = random.randint(1,10)
-                    
-                    if(shadowchance != 4):
-                        print("\nShadow dodged the attack.\n")
-                    
-                    elif(shadowchance == 4):
-                        hero.attack(enemy, "hero")
                 else:
-                    hero.attack(enemy, "hero")
+                    hero.attack(enemy)
                 
             elif raw_input == "2":
                 if (enemy.name == "medic"):
@@ -195,14 +203,15 @@ class Battle():
                 print(f"Invalid input {raw_input}")
 
             if enemy.health > 0:
-                enemy.attack(hero, enemy.name, False)
+                enemy.attack(hero, False)
                 
             elif enemy.name == 'zombie':
-                enemy.attack(hero, enemy.name, False)
+                enemy.attack(hero, False)
                 
         if hero.alive():
-            print(f"You've defeated the {enemy.name} and gained {enemy.bounty} coins.")
-            hero.coins += enemy.bounty
+            if not(enemy.alive()):
+                print(f"You've defeated the {enemy.name} and gained {enemy.bounty} coins.")
+                hero.coins += enemy.bounty
             return True
         else:
             return False
@@ -239,11 +248,25 @@ class Evade():
     cost = 25
     name = "evade"
     def apply(self, hero):
-        hero.evasion += 2
+        hero.evasion += 0.1
         print(f"\nHero now has evasion rating of {hero.evasion}.\n")
+
+class EssenceOfGhost():
+    cost = 15
+    name = "essence of ghost"
+    def apply(self, hero):
+        hero.fullevasion = 2
+        print(f"\nHero now has full evasion for {hero.fullevasion} attacks.\n")
+
+class GreatSword():
+    cost = 20
+    name = "great sword"
+    def apply(self, hero):
+        hero.power += 5
+        print(f"\nHero now has power of {hero.power}.\n")
         
 class Shop():
-    items = [Tonic, Sword, SuperTonic, Armor, Evade]
+    items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost]
     def do_shopping(self, hero):
         while True:
             print("====================")
@@ -259,14 +282,14 @@ class Shop():
             answer = input("> ")
             intAnswer = int(answer)
             
-            if answer == '':
-                print("Invalid input.")
-            elif intAnswer == 10:
+            if intAnswer == 10:
                 break
-            else:
+            elif intAnswer > 0 and intAnswer <= len(Shop.items):
                 itemToBuy = Shop.items[intAnswer-1]
                 item = itemToBuy()
                 hero.buy(hero, item)
+            else:
+                print("Invalid input.")
 def main():
 
     hero = Hero()
