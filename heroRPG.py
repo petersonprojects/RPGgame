@@ -61,6 +61,7 @@ class Hero(Character):
         self.armor_rating = 0
         self.evasion = 0
         self.fullevasion = 0
+        self.inventory = []
     
     def attack(self, character):
         if(random.randint(1,10) <= 2):
@@ -73,7 +74,6 @@ class Hero(Character):
     def buy(self, hero, item):
         if(self.coins >= item.cost):
             self.coins -= item.cost
-            item.apply(hero)
         else:
             print("You don't have enough coins to buy this item.")
             
@@ -162,6 +162,7 @@ class Battle():
             print(f"1. fight the {enemy.name}")
             print("2. do nothing")
             print("3. flee")
+            print("4. open inventory")
             print("> ", end=' ')
 
             raw_input = input()
@@ -199,6 +200,22 @@ class Battle():
             elif raw_input == "3":
                 print("\nGoodbye.\n")
                 break
+            
+            elif raw_input == "4":
+                while True:
+                    print("===================")
+                    print("-----INVENTORY-----")
+                    print("===================")
+                    for i in range(len(hero.inventory)):
+                        print(f"{i+1} use {hero.inventory[i].name}")
+                    
+                    print("10. Exit")
+                    iteminput = int(input("> "))
+                    if iteminput == 10:
+                        break
+                    else:
+                        hero.inventory[iteminput-1].apply(hero)
+                        del hero.inventory[iteminput-1]
             else:
                 print(f"Invalid input {raw_input}")
 
@@ -255,7 +272,7 @@ class EssenceOfGhost():
     cost = 15
     name = "essence of ghost"
     def apply(self, hero):
-        hero.fullevasion = 2
+        hero.fullevasion = 3
         print(f"\nHero now has full evasion for {hero.fullevasion} attacks.\n")
 
 class GreatSword():
@@ -266,7 +283,7 @@ class GreatSword():
         print(f"\nHero now has power of {hero.power}.\n")
         
 class Shop():
-    items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost]
+    items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword]
     def do_shopping(self, hero):
         while True:
             print("====================")
@@ -287,12 +304,14 @@ class Shop():
             elif intAnswer > 0 and intAnswer <= len(Shop.items):
                 itemToBuy = Shop.items[intAnswer-1]
                 item = itemToBuy()
+                hero.inventory.append(item)
                 hero.buy(hero, item)
             else:
                 print("Invalid input.")
 def main():
 
     hero = Hero()
+    inventory = []
     battle_engine = Battle()
     shopping_engine = Shop()
     enemies = [Goblin(),Shadow(),Medic(),Bard(),Behemoth()]
@@ -311,6 +330,4 @@ def main():
         
         shopping_engine.do_shopping(hero)
         
-
-
 main()
