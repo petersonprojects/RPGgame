@@ -67,6 +67,7 @@ class Character:
 class Hero(Character):
     def __init__(self):
         self.max = 50
+        self.maxArmor = 6
         self.name = "hero"
         self.health = 50
         self.power = 5
@@ -102,6 +103,7 @@ class Goblin(Character):
         self.evasion = 0
         self.fullevasion = 0
         self.swapCounter = 0
+        
 class Zombie(Character):
     def __init__(self):
         self.health = 0
@@ -136,9 +138,9 @@ class Medic(Character):
 class Shadow(Character):
     def __init__(self):
         self.health = 5
-        self.power = 3
+        self.power = 1
         self.name = "shadow"
-        self.bounty = 10
+        self.bounty = 15
         self.evasion = 0.9
         self.armor_rating = 0
         self.fullevasion = 0
@@ -147,9 +149,9 @@ class Shadow(Character):
 class Behemoth(Character):
     def __init__(self):
         self.health = 150
-        self.power = 5
+        self.power = 7
         self.name = "behemoth"
-        self.bounty = 100
+        self.bounty = 1000
         self.armor_rating = 3
         self.evasion = 0
         self.fullevasion = 0
@@ -288,8 +290,10 @@ class Armor():
     cost = 20
     name = "armor"  
     def apply(self, hero):
-        hero.armor_rating += 2 
-        print(f"\nHero now has armor rating of {hero.armor_rating}.\n")
+        hero.armor_rating += 2
+        if hero.armor_rating >= 6:
+            hero.armor_rating = 6
+        print(f"\nHero now has armor rating of ({hero.armor_rating}/6)\n")
 
 class Evade():
     cost = 15
@@ -297,7 +301,7 @@ class Evade():
     def apply(self, hero):
         hero.evasion += 0.15
         evasionChance = hero.evasion*100
-        print(f"\nHero now has an evasion chance of {hero.evasion}%\n")
+        print(f"\nHero now has an evasion chance of {evasionChance}%\n")
 
 class EssenceOfGhost():
     cost = 10
