@@ -249,7 +249,7 @@ class Battle():
                             hero.inventory[iteminput-1].apply(hero, enemy)
                         else:
                             hero.inventory[iteminput-1].apply(hero)
-                            
+
                         del hero.inventory[iteminput-1]
                         
             elif selection > 4:
@@ -366,9 +366,12 @@ class Shop():
             elif intAnswer > 0 and intAnswer <= len(Shop.items):
                 itemToBuy = Shop.items[intAnswer-1]
                 item = itemToBuy()
-                hero.inventory.append(item)
-                hero.buy(hero, item)
-                print(f"\n{(hero.inventory[len(hero.inventory)-1].name).capitalize()} added to inventory.\n")
+                if hero.coins >= item.cost:
+                    hero.inventory.append(item)
+                    hero.buy(hero, item)
+                    print(f"\n{(hero.inventory[len(hero.inventory)-1].name).capitalize()} added to inventory.\n")
+                else:
+                    print("\nNice try. You don't have enough coins.\n")
             elif inAnswer > len(Shop.items):
                 print("Invalid input. Try again.")
 def main():
