@@ -171,7 +171,7 @@ class Bard(Character):
 class Battle():
     def do_battle(self, hero, enemy):
         print("========================")
-        print(f"Hero faces the {enemy.name}.")
+        print(f"A wild {enemy.name} appears!")
         print("========================")
         
         while enemy.alive() and hero.alive():
@@ -186,16 +186,17 @@ class Battle():
             print("3. flee")
             print("4. open inventory")
             print("> ", end=' ')
-
+            selection = 0
             try:
+                inputError = False
                 selection = int(input())
             except ValueError:
-                print("Invalid input. Try again.")
+                print("\nInvalid input. Try again.")
+                inputError = True
                 
             print("")
             
             if selection == 1:
-                
                 if(enemy.name == 'bard'):
                     bardchance = random.randint(1,10)
                     
@@ -235,19 +236,27 @@ class Battle():
                         print(f"{i+1}. Use {hero.inventory[i].name}")
                     print("10. Exit")
                     
-                    iteminput = int(input("> "))
+                    try:
+                        iteminput = int(input("> "))
                         
+                    except ValueError:
+                        print("\nInvalid input. Try again. Value Error")
+
                     if iteminput == 10:
                         break
-                    else:
+                    elif iteminput > 0 and iteminput <= len(hero.inventory):
                         if(hero.inventory[iteminput-1].name == 'swap'):
                             hero.inventory[iteminput-1].apply(hero, enemy)
                         else:
                             hero.inventory[iteminput-1].apply(hero)
                             
                         del hero.inventory[iteminput-1]
-
-            if enemy.health > 0:
+                        
+            elif selection > 4:
+                print("\nInvalid input. Try again.")
+                inputError = True
+                
+            if enemy.health > 0 and inputError == False:
                 enemy.attack(hero, False)
                             
             elif enemy.name == 'zombie':
@@ -326,7 +335,7 @@ class GreatSword():
 #         enemy.power = temp
 #         hero.swapCounter = 1
 #         print(f"Attacks swapped!\nHero has attack of {hero.power}\nEnemy has attack of {enemy.power}")
-        
+
 class Shop():
     items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword]
     def do_shopping(self, hero):
@@ -355,7 +364,8 @@ class Shop():
                 hero.inventory.append(item)
                 hero.buy(hero, item)
                 print(f"\n{(hero.inventory[len(hero.inventory)-1].name).capitalize()} added to inventory.\n")
-
+            elif inAnswer > len(Shop.items):
+                print("Invalid input. Try again.")
 def main():
 
     hero = Hero()
