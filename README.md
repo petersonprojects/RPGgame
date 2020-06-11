@@ -22,3 +22,5 @@
 
 
 - Take the bounty home with you when the final boss is defeated!
+
+<img align = "left">
