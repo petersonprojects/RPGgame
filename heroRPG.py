@@ -10,7 +10,7 @@ class Character:
         self.fullevasion = 0
         self.swapCounter = 0
     
-    def attack(self, character, dblDmg):
+    def attack(self, character, dblDmg, enemy):
         evasion = random.random()
         
         if(character.evasion >= .99):
@@ -33,7 +33,7 @@ class Character:
                 
             if self.swapCounter > 0:
                 self.swapCounter = self.swapCounter - 1
-
+                Swap.expire(self,character,enemy)
             dblDmg = False
         
         else:
@@ -51,7 +51,7 @@ class Character:
                 
             if self.swapCounter > 0:
                 self.swapCounter = self.swapCounter - 1
-                # Swap.apply(self,character)
+                Swap.expire(self,character,enemy)
     
     def alive(self):
         if self.health > 0:
@@ -78,13 +78,13 @@ class Hero(Character):
         self.fullevasion = 0
         self.swapCounter = 0
     
-    def attack(self, character):
+    def attack(self, character, enemy):
         if(random.randint(1,10) <= 2):
             isDblDmg = True
         else:
             isDblDmg = False
         
-        super(Hero,self).attack(character, isDblDmg)
+        super(Hero,self).attack(character, isDblDmg, enemy)
     
     def buy(self, hero, item):
         if(self.coins >= item.cost):
@@ -126,7 +126,7 @@ class Medic(Character):
         self.health = 30
         self.power = 3
         self.name = "medic"
-        self.bounty = 10
+        self.bounty = 15
         self.armor_rating = 0
         self.evasion = 0
         self.fullevasion = 0
@@ -202,19 +202,19 @@ class Battle():
                     
                     if(bardchance >= 8):
                         print("\nThe bard charmed you into attacking yourself!\n")
-                        hero.attack(hero)
+                        hero.attack(hero,enemy)
                     elif bardchance < 8:
-                        hero.attack(enemy)
+                        hero.attack(enemy,hero)
                 
                 elif(enemy.name == "medic"):
                     medicchance = random.randint(1,10)
                     if(medicchance <= 2):
                         enemy.restore()
                         print("Medic restored 2 health points.")
-                    hero.attack(enemy)
+                    hero.attack(enemy,hero)
                 
                 else:
-                    hero.attack(enemy)
+                    hero.attack(enemy,hero)
                 
             elif selection == 2:
                 if (enemy.name == "medic"):
@@ -231,7 +231,7 @@ class Battle():
                 while True:
                     print("===================")
                     print("-----INVENTORY-----")
-                    print("===================")
+                    print("===================\n")
                     for i in range(len(hero.inventory)):
                         print(f"{i+1}. Use {hero.inventory[i].name}")
                     print("10. Exit")
@@ -257,10 +257,10 @@ class Battle():
                 inputError = True
                 
             if enemy.health > 0 and inputError == False:
-                enemy.attack(hero, False)
+                enemy.attack(hero, False, enemy)
                             
             elif enemy.name == 'zombie':
-                enemy.attack(hero, False)
+                enemy.attack(hero, False, enemy)
             
         if hero.alive():
             if not(enemy.alive()):
@@ -293,7 +293,7 @@ class SuperTonic():
         hero.health += 50
         if hero.health > hero.max:
             hero.health = hero.max
-        print(f"\nHero's health inscread to {hero.health}.\n")
+        print(f"\nHero's health increased to {hero.health}.\n")
 
 class Armor():
     cost = 20
@@ -326,18 +326,23 @@ class GreatSword():
         hero.power += 5
         print(f"\nHero now has power of {hero.power}.\n")
 
-# class Swap():
-#     cost = 5
-#     name = "swap"
-#     def apply(self, hero, enemy):
-#         temp = hero.power
-#         hero.power = enemy.power
-#         enemy.power = temp
-#         hero.swapCounter = 1
-#         print(f"Attacks swapped!\nHero has attack of {hero.power}\nEnemy has attack of {enemy.power}")
-
+class Swap():
+    cost = 5
+    name = "swap"
+    def apply(self, hero, enemy):
+        temp = hero.power
+        hero.power = enemy.power
+        enemy.power = temp
+        hero.swapCounter = 1
+        print(f"Attacks swapped!\nHero has attack of {hero.power}\nEnemy has attack of {enemy.power}")
+    def expire(self, hero, enemy):
+        temp = hero.power
+        hero.power = enemy.power
+        enemy.power = temp
+        print(f"\nSwap expired. Attack power returned to normal.\n")
+        
 class Shop():
-    items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword]
+    items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword, Swap]
     def do_shopping(self, hero):
         while True:
             print("====================")
@@ -371,7 +376,7 @@ def main():
     hero = Hero()
     battle_engine = Battle()
     shopping_engine = Shop()
-    enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Goblin(),Behemoth()]
+    enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Behemoth()]
 
     for enemy in enemies:
         hero_won = battle_engine.do_battle(hero,enemy)
