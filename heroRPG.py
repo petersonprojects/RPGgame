@@ -62,7 +62,8 @@ class Character:
         return alive
     
     def print_status(self, character):
-        print(f"The {character} has {self.health} health, {self.power} power, and {self.armor_rating} armor rating.")
+        evasion = int(self.evasion*100)
+        print(f"The {character} has {self.health} health, {self.power} power, {self.armor_rating} armor rating, and {evasion}% evasion.")
 
 class Hero(Character):
     def __init__(self):
