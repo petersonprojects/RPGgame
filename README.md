@@ -12,9 +12,12 @@
 
 ![rpg screenshot1](/rpgimages/rpg1.png)
 
+```CSS
+.align{float: right}
+```
 
 - Use items while on the battlefield! Careful, you're still vulnerable to attacks!
-![rpg screenshot2](/rpgimages/rpg3.png)
+![rpg screenshot2](/rpgimages/rpg3.png){.align}
 
 
 - Some enemies have unique attributes which may alter your strategy as you progress.
