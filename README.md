@@ -13,15 +13,16 @@
 ![rpg screenshot1](/rpgimages/rpg1.png)
 
 
-.align{float: right}
-
-
 - Use items while on the battlefield! Careful, you're still vulnerable to attacks!
-![rpg screenshot2](/rpgimages/rpg3.png){.align}
+
+
+![rpg screenshot2](/rpgimages/rpg3.png)
 
 
 - Some enemies have unique attributes which may alter your strategy as you progress.
 
-<img align="left" width="482" height="339" src="https://www.github.com/petersonprojects/blob/rpgimages/rpg2.png">
+
+![rpg screenshot3](/rpgimages/rpg2.png)
+
 
 - Take the bounty home with you when the final boss is defeated!
