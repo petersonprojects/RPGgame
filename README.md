@@ -8,5 +8,6 @@
 3. Create a Shop object which the user can buy, store and use items from
 4. Add unique items to the shop which can modify character or enemy attributes
 
+## Screenshots
 
-
+![rpg terminal game](Desktop/rpgimages/rpg1.png)
