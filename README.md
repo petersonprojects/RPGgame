@@ -18,9 +18,7 @@
 
 
 - Some enemies have unique attributes which may alter your strategy as you progress.
-![rpg screenshot3](/rpgimages/rpg2.png)
 
+<img align="left" width="482" height = "339" src = "/rpgimages/rpg2.png">
 
 - Take the bounty home with you when the final boss is defeated!
-
-<img align = "left">
