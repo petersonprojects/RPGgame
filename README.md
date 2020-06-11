@@ -10,4 +10,4 @@
 
 ## Screenshots
 
-![rpg terminal game](Desktop/rpgimages/rpg1.png)
+![rpg screenshot](/rpgimages/rpg1.png)
