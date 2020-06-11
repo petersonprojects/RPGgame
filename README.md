@@ -18,7 +18,7 @@
 
 
 
-- Some enemies have unique attributes which may alter your strategy as you progress.
+- Some enemies have unique attributes which may alter your strategy as you progress (note the hero has 4 armor at this point).
 
 
 
