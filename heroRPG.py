@@ -373,7 +373,7 @@ class Shop():
                     print(f"\n{(hero.inventory[len(hero.inventory)-1].name).capitalize()} added to inventory.\n")
                 else:
                     print("\nNice try. You don't have enough coins.\n")
-            elif inAnswer > len(Shop.items):
+            elif intAnswer > len(Shop.items):
                 print("Invalid input. Try again.")
 def main():
 
@@ -383,7 +383,9 @@ def main():
     enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Behemoth()]
 
     for enemy in enemies:
+        
         hero_won = battle_engine.do_battle(hero,enemy)
+        
         if not hero_won:
             print("Your hero died.")
             break
