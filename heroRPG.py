@@ -506,7 +506,7 @@ class Shop():
                         
                         You have {hero.coins} coins.
                         
-                        What do you want to do?
+                        What do you want to do next?
                     """)
             
             for i in range(len(Shop.items)):
@@ -542,16 +542,14 @@ class Shop():
 def main():
 
     hero = Hero()
+    enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Behemoth()]
+    
     battle_engine = Battle()
     shopping_engine = Shop()
 
-    #randomize this at some point
-    enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Behemoth()]
-
     for enemy in enemies:
-            
         
-        hero_won = battle_engine.do_battle(hero,enemy)
+        hero_won = battle_engine.do_battle(hero, enemy)
         
         if not hero_won:
             
@@ -609,5 +607,7 @@ def main():
             hero.coins += 5
         
         shopping_engine.do_shopping(hero)
+    
+    ## end for enemy in enemies loop
         
 main()
