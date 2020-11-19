@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import random
-import time
 
 class Character:
     def __init__(self, health, power):
@@ -207,6 +206,13 @@ class Battle():
                   \       \  /`
                            \(
             """)
+        elif(enemy.name == "zombie"):
+            print("""
+                  
+                  
+                  
+                  
+                  """)
         
         
         while enemy.alive() and hero.alive():
@@ -271,18 +277,20 @@ class Battle():
             
             elif selection == 4:
                 while True:
-                    print("===================")
-                    print("-----INVENTORY-----")
-                    print("===================\n")
+                    print("""
+                            ===================
+                            -----INVENTORY-----
+                            ===================
+                    """)
                     for i in range(len(hero.inventory)):
-                        print(f"{i+1}. Use {hero.inventory[i].name}")
+                        print(f"\t\t\t{i+1}. Use {hero.inventory[i].name}")
                     print("10. Exit")
                     
                     try:
                         iteminput = int(input("> "))
                         
                     except ValueError:
-                        print("\nInvalid input. Try again. Value Error")
+                        print("\n\t\t\tInvalid input. Try again. Value Error")
 
                     if iteminput == 10:
                         break
@@ -306,11 +314,41 @@ class Battle():
             
         if hero.alive():
             if not(enemy.alive()):
-                print(f"\t\t\tYou've defeated the {enemy.name} and gained {enemy.bounty} coins.")
+                print("""
+                           ,--.
+                          {    }
+                          K,   }
+                         /  `Y`
+                    _   /   /
+                   {_'-K.__/
+                     `/-.__L._
+                     /  ' /`\_}
+                    /  ' /     
+            ____   /  ' /
+     ,-'~~~~    ~~/  ' /_
+   ,'             ``~~~\%\%',
+  (                     %  Y
+ {                      \%\% I
+{      -                 %  `.
+|       ',                %  )
+|        |   ,..__      __. Y
+|    .,_./  Y ' / ^Y   J   )|
+\           |' /   |   |   ||
+ \          L_/    . _ (_,.'(
+  \,   ,      ^^""' / |      )
+    \_  \          /,L]     /
+      '-_`-,       ` `   ./`
+         `-(_            )
+             ^^\..___,.--`
+                                """)
+                print(f"\n\t\t\tYou've defeated the {enemy.name} and gained {enemy.bounty} coins.")
+                
                 hero.coins += enemy.bounty
             return True
         else:
             return False
+        
+## items and shop
         
 class Tonic():
     cost = 5
@@ -388,10 +426,6 @@ class Shop():
     def do_shopping(self, hero):
         while True:
             print(f"""
-                        ====================
-                        Welcome to The Shop!
-                        ====================
-                        
                            .-----.
                          .'       `.
                         :      ^v^  :
@@ -404,9 +438,9 @@ class Shop():
      /#%     \   |= I I ||  |- |
      ~~|~~~|~~   |_=_-__|'  |[]|
        |[] |_______\__|/_ _ |= |`.
-^V^    |-  /= __   __    /-\|= | :;
-       |= /- /\/  /\/   /=- \.-' :;
-       | /_.=========._/_.-._\  .:'
+^V^    |-  /= __   __    /-\|= | :;     ===========================
+       |= /- /\/  /\/   /=- \.-' :;         Welcome to The Shop
+       | /_.=========._/_.-._\  .:'     ===========================
        |= |-.'.- .'.- |  /|\ |.:'
        \  |=|:|= |:| =| |~|~||'|
         |~|-|:| -|:|  |-|~|~||=|      ^V^
@@ -453,7 +487,11 @@ class Shop():
                     print("\n\t\t\tNice try. You don't have enough coins.\n")
             elif intAnswer > len(Shop.items):
                 print("\t\t\tInvalid input. Try again.")
-                
+
+
+## main
+
+
 def main():
 
     hero = Hero()
@@ -468,7 +506,48 @@ def main():
         hero_won = battle_engine.do_battle(hero,enemy)
         
         if not hero_won:
-            print("Your hero died.")
+            
+            print("""
+            _..--""---.
+          /           ".
+          `            l
+          |'._  ,._ l/"\\         ==============================
+          |  _J<__/.v._/          |   Rest in peace, brother   |
+           \( ,~._,,,,-)          ==============================
+            `-\' \`,,j|
+               \_,____J
+          .--.__)--(__.--.
+         /  `-----..--'. j
+         '.- '`--` `--' \\
+        //  '`---'`  `-' \\
+       //   '`----'`.-.-' \\
+     _//     `--- -'   \' | \________
+    |  |         ) (      `.__.---- -'\\
+     \7          \`-(               74\\\\
+     ||       _  /`-(               l|//7__
+     |l    ('  `-)-/_.--.          f''` -.-"|
+     |\     l\_  `-'    .'         |     |  |
+     llJ   _ _)J--._.-('           |     |  l
+     |||( ( '_)_  .l   ". _    ..__I     |  L
+     ^\\\||`'   "   '"-. " )''`'---'     L.-'`-.._
+          \ |           ) /.              ``'`-.._``-.
+          l l          / / |                      |''|
+           " \        / /   "-..__                |  |
+           | |       / /          1       ,- t-...J_.'
+           | |      / /           |       |  |
+           J  \  /"  (            l       |  |
+           | ().'`-()/            |       |  |
+          _.-"_.____/             l       l.-l
+      _.-"_.+"|                  /        \.  \\
+/"\.-"_.-"  | |                 /          \   \\
+\_   "      | |                1            | `'|
+  |ll       | |                |            i   |
+   \\\\       |-\               \j ..          L,,'. `/
+ __ \\\\     ( .-\           .--'    ``--../..'      '-..
+     `'''`----`\\\\ .....--'''
+                \\\\                           
+                  """)
+            
             break
         
         if(enemy.name == "behemoth" and enemy.alive() == False):
