@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import random
+import time
 
 class Character:
     def __init__(self, health, power):
@@ -19,7 +20,7 @@ class Character:
         if(dblDmg == True):
             
             if(character.evasion >= evasion or character.fullevasion > 0):
-                print(f"\n{character.name} evaded the attack from {self.name}!\n")
+                print(f"\n\v\t{character.name} evaded the attack from {enemy.name}!\n")
                 character.fullevasion -= 1
             
             else:
@@ -29,7 +30,7 @@ class Character:
                     dmgAfterArmor = 0
                 
                 character.health = character.health - dmgAfterArmor
-                print(f"The {self.name} does {dmgAfterArmor} damage to the {character.name}.")
+                print(f"\t\t\tThe {enemy.name} does {dmgAfterArmor} damage to the {character.name}.\n")
                 
             if self.swapCounter > 0:
                 self.swapCounter = self.swapCounter - 1
@@ -38,7 +39,7 @@ class Character:
         
         else:
             if(character.evasion >= evasion or character.fullevasion > 0):
-                print(f"\n{character.name} evaded the attack from {self.name}!\n")
+                print(f"\n\v\t{character.name} evaded the attack from {enemy.name}!\n")
                 character.fullevasion -= 1
             else:
                 dmgAfterArmor = self.power - character.armor_rating
@@ -47,11 +48,11 @@ class Character:
                     dmgAfterArmor = 0
                 
                 character.health = character.health - dmgAfterArmor
-                print(f"The {self.name} does {dmgAfterArmor} damage to the {character.name}.")
+                print(f"\v\t\t\tThe {enemy.name} does {dmgAfterArmor} damage to the {character.name}.\n")
                 
             if self.swapCounter > 0:
                 self.swapCounter = self.swapCounter - 1
-                Swap.expire(self,character,enemy)
+                Swap.expire(self, character, enemy)
     
     def alive(self):
         if self.health > 0:
@@ -63,7 +64,7 @@ class Character:
     
     def print_status(self, character):
         evasion = int(self.evasion*100)
-        print(f"The {character} has {self.health} health, {self.power} power, {self.armor_rating} armor rating, and {evasion}% evasion.")
+        print(f"\tThe {character} has {self.health} health, {self.power} power, {self.armor_rating} armor rating, and {evasion}% evasion.")
 
 class Hero(Character):
     def __init__(self):
@@ -92,7 +93,7 @@ class Hero(Character):
             self.coins -= item.cost
 
         else:
-            print("You don't have enough coins to buy this item.")
+            print("\t\tYou don't have enough coins to buy this item.")
         
 class Goblin(Character):
     def __init__(self):
@@ -120,7 +121,7 @@ class Zombie(Character):
         return True
     
     def print_status(self, character):
-        print(f"The zombie has 0 health and {self.power} power.")
+        print(f"\t\tThe zombie has 0 health and {self.power} power.")
     
 class Medic(Character):
     def __init__(self):
@@ -132,7 +133,7 @@ class Medic(Character):
         self.evasion = 0
         self.fullevasion = 0
         self.swapCounter = 0
-        
+
     def restore(self):
         self.health = self.health+10
 
@@ -171,23 +172,63 @@ class Bard(Character):
         
 class Battle():
     def do_battle(self, hero, enemy):
-        print("========================")
-        print(f"A wild {enemy.name} appears!")
-        print("========================")
+        
+        print(f""" \n\n
+                    _
+         _         | |
+        | | _______| |---------------------------------------------\\
+        |:-)_______|==[]============================================>
+        |_|        | |---------------------------------------------/
+                   |_|
+
+
+                        =============================
+                        A wild {enemy.name} appears!
+                        =============================
+            
+            """)
+        
+        if(enemy.name == "goblin"):
+            print("""
+                          .-\"\"\"\".
+                         /       \\
+                     __ /   .-.  .\\
+                    /  `\  /   \/  \\
+                    |  _ \/   .==.==.
+                    | (   \  /____\__\\
+                    \ \      (_()(_()
+                     \ \            '---._
+                      \                   \_
+                   /\ |`       (__)________/
+                  /  \|     /\___/
+                 |    \     \||VV
+                 |     \     \|\"\"\"\"\,
+                 |      \     ______|
+                  \       \  /`
+                           \(
+            """)
+        
         
         while enemy.alive() and hero.alive():
             
             hero.print_status("hero")
             enemy.print_status(enemy.name)
             
-            print("========================")
-            print("\nWhat do you want to do?")
-            print(f"1. fight the {enemy.name}")
-            print("2. do nothing")
-            print("3. flee")
-            print("4. open inventory")
+            print(f"""
+                
+                        ========================
+                        
+                        What do you want to do?
+                        1. fight the {enemy.name}
+                        2. do nothing
+                        3. flee
+                        4. open inventory
+                        
+                        ========================
+                
+                """)
             print("> ", end=' ')
-            selection = 0
+
             try:
                 inputError = False
                 selection = int(input())
@@ -265,7 +306,7 @@ class Battle():
             
         if hero.alive():
             if not(enemy.alive()):
-                print(f"You've defeated the {enemy.name} and gained {enemy.bounty} coins.")
+                print(f"\t\t\tYou've defeated the {enemy.name} and gained {enemy.bounty} coins.")
                 hero.coins += enemy.bounty
             return True
         else:
@@ -278,14 +319,14 @@ class Tonic():
         hero.health += 10
         if hero.health > hero.max:
             hero.health = hero.max
-        print(f"\nHero's health increased to {hero.health}\n")
+        print(f"\n\t\t\tHero's health increased to {hero.health}\n")
 
 class Sword():
     cost = 10
     name = "sword"
     def apply(self, hero):
         hero.power += 2
-        print(f"\nHero's power increased to {hero.power}.\n")
+        print(f"\n\t\t\tHero's power increased to {hero.power}.\n")
         
 class SuperTonic():
     cost = 20
@@ -294,7 +335,7 @@ class SuperTonic():
         hero.health += 50
         if hero.health > hero.max:
             hero.health = hero.max
-        print(f"\nHero's health increased to {hero.health}.\n")
+        print(f"\n\t\t\tHero's health increased to {hero.health}.\n")
 
 class Armor():
     cost = 20
@@ -303,7 +344,7 @@ class Armor():
         hero.armor_rating += 2
         if hero.armor_rating >= 6:
             hero.armor_rating = 6
-        print(f"\nHero now has armor rating of ({hero.armor_rating}/6)\n")
+        print(f"\n\t\t\tHero now has armor rating of ({hero.armor_rating}/6)\n")
 
 class Evade():
     cost = 15
@@ -311,21 +352,21 @@ class Evade():
     def apply(self, hero):
         hero.evasion += 0.15
         evasionChance = hero.evasion*100
-        print(f"\nHero now has an evasion chance of {evasionChance}%\n")
+        print(f"\n\t\t\tHero now has an evasion chance of {evasionChance}%\n")
 
 class EssenceOfGhost():
     cost = 10
     name = "essence of ghost"
     def apply(self, hero):
         hero.fullevasion = 3
-        print(f"\nHero now has 100% evasion for {hero.fullevasion} attacks.\n")
+        print(f"\n\t\t\tHero now has 100% evasion for {hero.fullevasion} attacks.\n")
 
 class GreatSword():
     cost = 20
     name = "great sword"
     def apply(self, hero):
         hero.power += 5
-        print(f"\nHero now has power of {hero.power}.\n")
+        print(f"\n\t\t\tHero now has power of {hero.power}.\n")
 
 class Swap():
     cost = 5
@@ -335,32 +376,69 @@ class Swap():
         hero.power = enemy.power
         enemy.power = temp
         hero.swapCounter = 1
-        print(f"Attacks swapped!\nHero has attack of {hero.power}\nEnemy has attack of {enemy.power}")
+        print(f"\t\t\tAttacks swapped!\nHero has attack of {hero.power}\nEnemy has attack of {enemy.power}")
     def expire(self, hero, enemy):
         temp = hero.power
         hero.power = enemy.power
         enemy.power = temp
-        print(f"\nSwap expired. Attack power returned to normal.\n")
+        print(f"\n\t\t\tSwap expired. Attack power returned to normal.\n")
         
 class Shop():
     items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword, Swap]
     def do_shopping(self, hero):
         while True:
-            print("====================")
-            print("Welcome to The Shop!")
-            print("====================")
-            print(f"You have {hero.coins} coins.\n")
-            print("What do you want to do?")
+            print(f"""
+                        ====================
+                        Welcome to The Shop!
+                        ====================
+                        
+                           .-----.
+                         .'       `.
+                        :      ^v^  :
+                        :           :
+                        '           '
+         |~        www   `.       .'
+        /.\       /#^^\_   `-/\--'
+       /#  \     /#%    \   /# \\
+      /#%   \   /#%______\ /#%__\\
+     /#%     \   |= I I ||  |- |
+     ~~|~~~|~~   |_=_-__|'  |[]|
+       |[] |_______\__|/_ _ |= |`.
+^V^    |-  /= __   __    /-\|= | :;
+       |= /- /\/  /\/   /=- \.-' :;
+       | /_.=========._/_.-._\  .:'
+       |= |-.'.- .'.- |  /|\ |.:'
+       \  |=|:|= |:| =| |~|~||'|
+        |~|-|:| -|:|  |-|~|~||=|      ^V^
+        |=|=|:|- |:|- | |~|~|| |
+        | |-_~__=_~__=|_^^^^^|/___
+        |-(=-=-=-=-=-(|=====/=_-=/\\
+        | |=_-= _=- _=| -_=/=_-_/__\ 
+        | |- _ =_-  _-|=_- |]#| I II
+        |=|_/ \_-_= - |- = |]#| I II
+        | /  _/ \. -_=| =__|]!!!I_II!!
+       _|/-'/  ` \_/ \|/' _ ^^^^`.==_^.
+     _/  _/`-./`-; `-.\_ / \_'\`. `. ===`.
+    / .-'  __/_   `.   _/.' .-' `-. ; ====;\\
+   /.   `./    \ `. \ / -  /  .-'.' ====='  >
+  /  \  /  .-' `--.  / .' /  `-.' ======.' /
+                        
+                        You have {hero.coins} coins.
+                        
+                        What do you want to do?
+                    """)
+            
             for i in range(len(Shop.items)):
                 item = Shop.items[i]
-                print(f"{i+1}. buy {item.name} ({item.cost})")
-            print("10. leave shop")
+                print(f"\t\t\t{i+1}. buy {item.name} ({item.cost})")
+                
+            print("\t\t\t10. leave shop")
             
             try:
                 answer = input("> ")
                 intAnswer = int(answer)
             except:
-                print("Invalid input. Try again.")
+                print("\t\t\tInvalid input. Try again.")
                 
             if intAnswer == 10:
                 break
@@ -370,16 +448,19 @@ class Shop():
                 if hero.coins >= item.cost:
                     hero.inventory.append(item)
                     hero.buy(hero, item)
-                    print(f"\n{(hero.inventory[len(hero.inventory)-1].name).capitalize()} added to inventory.\n")
+                    print(f"\n\t\t\t{(hero.inventory[len(hero.inventory)-1].name).capitalize()} added to inventory.\n")
                 else:
-                    print("\nNice try. You don't have enough coins.\n")
+                    print("\n\t\t\tNice try. You don't have enough coins.\n")
             elif intAnswer > len(Shop.items):
-                print("Invalid input. Try again.")
+                print("\t\t\tInvalid input. Try again.")
+                
 def main():
 
     hero = Hero()
     battle_engine = Battle()
     shopping_engine = Shop()
+
+    #randomize this at some point
     enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Behemoth()]
 
     for enemy in enemies:
