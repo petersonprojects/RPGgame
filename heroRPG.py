@@ -173,18 +173,15 @@ class Battle():
     def do_battle(self, hero, enemy):
         
         print(f""" \n\n
-                    _
          _         | |
         | | _______| |---------------------------------------------\\
         |:-)_______|==[]============================================>
         |_|        | |---------------------------------------------/
                    |_|
 
-
                         =============================
                         A wild {enemy.name} appears!
                         =============================
-            
             """)
         
         if(enemy.name == "goblin"):
@@ -208,10 +205,28 @@ class Battle():
             """)
         elif(enemy.name == "zombie"):
             print("""
-                  
-                  
-                  
-                  
+                        _,--~~~,
+                       .'        `.
+                       |           ;
+                       |           :
+                      /_,-==/     .'
+                    /'`\*  ;      :      
+                  :'    `-        :      
+                  `~*,'     .     :      
+                     :__.,._  `;  :      
+                     `\'    )  '  `,     
+                         \-/  '     )     
+                         :'          \ _
+                          `~---,-~    `,)
+          ___                   \     /~`\\
+    \---__ `;~~~-------------~~~(| _-'    `,
+  ---, ' \`-._____     _______.---'         \\
+ \--- `~~-`,      ~~~~~~                     `,
+\----      )                                   \\
+\----.  __ /                                    `-
+ \----'` -~____  
+               ~~~~~--------,.___     
+                                 ```\_
                   """)
         
         
@@ -314,7 +329,7 @@ ___<__(|) _   ""-/  / /   /
                     """)
                     for i in range(len(hero.inventory)):
                         print(f"\t\t\t{i+1}. Use {hero.inventory[i].name}")
-                    print("10. Exit")
+                    print(f"\t\t\t{len(hero.inventory)+1}. Exit")
                     
                     try:
                         iteminput = int(input("> "))
@@ -322,7 +337,7 @@ ___<__(|) _   ""-/  / /   /
                     except ValueError:
                         print("\n\t\t\tInvalid input. Try again. Value Error")
 
-                    if iteminput == 10:
+                    if iteminput == len(hero.inventory)+1:
                         break
                     elif iteminput > 0 and iteminput <= len(hero.inventory):
                         if(hero.inventory[iteminput-1].name == 'swap'):
@@ -452,7 +467,9 @@ class Swap():
         print(f"\n\t\t\tSwap expired. Attack power returned to normal.\n")
         
 class Shop():
+    
     items = [Tonic, Sword, SuperTonic, Armor, Evade, EssenceOfGhost, GreatSword, Swap]
+    
     def do_shopping(self, hero):
         while True:
             print(f"""
@@ -496,7 +513,7 @@ class Shop():
                 item = Shop.items[i]
                 print(f"\t\t\t{i+1}. buy {item.name} ({item.cost})")
                 
-            print("\t\t\t10. leave shop")
+            print(f"\t\t\t{len(Shop.items) + 1}. leave shop")
             
             try:
                 answer = input("> ")
@@ -504,7 +521,7 @@ class Shop():
             except:
                 print("\t\t\tInvalid input. Try again.")
                 
-            if intAnswer == 10:
+            if (intAnswer == (len(Shop.items) + 1)):
                 break
             elif intAnswer > 0 and intAnswer <= len(Shop.items):
                 itemToBuy = Shop.items[intAnswer-1]
@@ -532,6 +549,7 @@ def main():
     enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Behemoth()]
 
     for enemy in enemies:
+            
         
         hero_won = battle_engine.do_battle(hero,enemy)
         
@@ -575,16 +593,20 @@ def main():
    \\\\       |-\               \j ..          L,,'. `/
  __ \\\\     ( .-\           .--'    ``--../..'      '-..
      `'''`----`\\\\ .....--'''
-                \\\\                           
-                  """)
+                \\\\    
+
+                """)
             
             break
         
         if(enemy.name == "behemoth" and enemy.alive() == False):
-            print("\n*******************************\n")
-            print(f"Congratulations! You've won! Take those {hero.coins} coins home with you!")
-            print("\n*******************************\n")
+            print("\n\t\t\t******************************************************************************\n")
+            print(f"\t\t\tCongratulations! You've won! Take those {hero.coins} coins home with you!")
+            print("\n\t\t\t******************************************************************************\n")
             break
+        
+        if(enemy.name == 'zombie'):
+            hero.coins += 5
         
         shopping_engine.do_shopping(hero)
         
