@@ -63,7 +63,7 @@ class Character:
     
     def print_status(self, character):
         evasion = int(self.evasion*100)
-        print(f"\tThe {character} has {self.health} health, {self.power} power, {self.armor_rating} armor rating, and {evasion}% evasion.")
+        print(f"\tThe {character} has {self.health} health, {self.power} power, {self.armor_rating} armor, and {evasion}% evasion.")
 
 class Hero(Character):
     def __init__(self):
@@ -189,10 +189,10 @@ class Battle():
                           .-\"\"\"\".
                          /       \\
                      __ /   .-.  .\\
-                    /  `\  /   \/  \\
-                    |  _ \/   .==.==.
-                    | (   \  /____\__\\
-                    \ \      (_()(_()
+                    /  `\  /   \/  \\        .-=================================
+                    |  _ \/   .==.==.       /   Gimme your gold, filthy human! |
+                    | (   \  /____\__\\     //-=================================
+                    \ \      (_()(_()      V
                      \ \            '---._
                       \                   \_
                    /\ |`       (__)________/
@@ -228,6 +228,82 @@ class Battle():
                ~~~~~--------,.___     
                                  ```\_
                   """)
+            
+        elif(enemy.name == "medic"):
+            print("""
+                        ██████████                        
+                    ████░░░░░░    ████                    
+                ████░░░░              ████                
+              ██░░░░                      ██              
+              ██░░░░        ▒▒            ██              
+              ██░░░░      ▒▒▒▒▒▒          ████            
+            ████░░░░░░      ▒▒            ██▒▒██          
+          ██▒▒▒▒██░░░░░░░░              ██▒▒░░░░██        
+        ██▒▒▒▒▒▒▒▒██░░░░░░░░░░░░░░░░░░██▒▒░░░░░░▒▒██      
+      ██▒▒▒▒▒▒▒▒▒▒▒▒██████████████████▒▒░░░░░░░░░░▒▒██    
+    ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░▒▒██    
+  ██▒▒▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░▒▒██  
+  ██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒██▒▒▒▒░░▒▒██▒▒▒▒▒▒██████░░▒▒▒▒░░██  
+  ██▒▒░░▒▒▒▒██░░██▒▒██░░██▒▒▒▒██░░██▒▒▒▒██  ██░░▒▒▒▒░░██  
+  ██▒▒░░▒▒▒▒██░░██░░██░░██░░░░██░░██░░░░██  ██▒▒░░▒▒▒▒██  
+██▒▒▒▒▒▒▒▒████░░██████░░░░████░░░░████████  ████░░░░▒▒▒▒██
+██▒▒▒▒▒▒██░░░░░░░░░░░░░░░░░░░░    ░░░░░░        ██░░▒▒▒▒██
+██▒▒████░░░░░░                                    ████▒▒██
+██▒▒██░░░░                                          ██▒▒██
+██▒▒██░░                                            ██▒▒██
+██▒▒████░░        ██                  ██          ████▒▒██
+██▒▒▒▒▒▒██░░                            ░░  ░░  ██▒▒▒▒▒▒██
+██▒▒▒▒▒▒██░░░░░░░░              ░░      ░░░░░░░░▓▓▒▒▒▒▒▒██
+  ██▒▒░░██░░            ░░░░░░░░░░              ▓▓▒▒▒▒██  
+  ██▒▒▒▒▒▒██░░░░          ░░░░░░              ▓▓▒▒▒▒▒▒██  
+    ██▒▒▒▒▒▒████░░░░    ░░  ░░            ████▒▒▒▒▒▒██    
+    ██▒▒▒▒▒▒▒▒▒▒████░░░░░░░░░░░░░░░░░░████▒▒▒▒▒▒▒▒▒▒██    
+    ████████▒▒▒▒▒▒▒▒██████████████████▒▒▒▒▒▒▒▒████████    
+            ████████████░░░░░░    ████████████            
+              ██  ██░░██░░    ░░  ██░░██  ██              
+          ████░░██░░░░░░██░░    ██░░░░░░██  ██            
+        ██░░░░░░██████░░██░░░░  ██░░██████    ██          
+      ██░░░░    ░░░░░░██░░██░░██░░██            ██        
+      ██░░░░          ██░░░░▓▓░░░░██            ██        
+      ▓▓░░░░░░░░      ████▓▓  ██████            ██        
+    ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    ██      
+    ████████▓▓██████████████████████████▓▓██████████      
+                  """)
+            
+        elif(enemy.name == "shadow"):
+            
+            print("""
+     .-.     .______.
+   .'   `.   |  ??? |
+   :o o   :  |______|
+   : -    `.
+  :         ``.
+ :             `.
+:  :         .   `.
+:   :          ` . `.
+ `.. :            `. ``;
+    `:;             `:'
+       :              `.
+        `.              `.     .
+          `'`'`'`---..,___`;.-'
+                  """)
+        elif(enemy.name == "bard"):
+            
+            print("""
+                          ,     
+                      ,   |     
+   _,,._              |  0'     
+ ,'     `.__,--.     0'         
+/   .--.        |           ,,, 
+| [=========|==|==|=|==|=|==___]
+\   "--"  __    |           ''' 
+ `._   _,'  `--'                
+    ""'     ,   ,0     ,        
+            |)  |)   ,'|        
+  ____     0'   '   | 0'        
+  |  |             0'           
+ 0' 0'
+                  """)
         
         
         while enemy.alive() and hero.alive():
@@ -255,7 +331,7 @@ class Battle():
                 inputError = False
                 selection = int(input())
             except ValueError:
-                print("\nInvalid input. Try again.")
+                print("\n\t\t\tInvalid input. Try again.")
                 inputError = True
                 
             print("")
@@ -265,7 +341,7 @@ class Battle():
                     bardchance = random.randint(1,10)
                     
                     if(bardchance >= 8):
-                        print("\nThe bard charmed you into attacking yourself!\n")
+                        print("\n\t\t\tThe bard charmed you into attacking yourself!\n")
                         hero.attack(hero,enemy)
                     elif bardchance < 8:
                         hero.attack(enemy,hero)
@@ -274,7 +350,7 @@ class Battle():
                     medicchance = random.randint(1,10)
                     if(medicchance <= 2):
                         enemy.restore()
-                        print("Medic restored 2 health points.")
+                        print("\t\t\tMedic restored 2 health points.")
                     hero.attack(enemy,hero)
                 
                 else:
@@ -542,7 +618,7 @@ class Shop():
 def main():
 
     hero = Hero()
-    enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Medic(),Behemoth()]
+    enemies = [Goblin(),Zombie(),Shadow(),Medic(),Bard(),Behemoth()]
     
     battle_engine = Battle()
     shopping_engine = Shop()
